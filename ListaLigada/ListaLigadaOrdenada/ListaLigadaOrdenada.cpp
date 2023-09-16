@@ -125,29 +125,109 @@ void inserirElemento()
 	cin >> novo->valor;
 	novo->prox = NULL;
 
+	NO* atual = primeiro;
+	while (atual != NULL)
+	{
+		if (atual->valor == novo->valor)
+		{
+			cout << "Elemento já existe na lista. Não foi inserido." << endl;
+			free(novo);
+			return;
+		}
+		atual = atual->prox;
+	}
+
 	if (primeiro == NULL)
 	{
 		primeiro = novo;
 	}
+	else if (novo->valor < primeiro->valor)
+	{
+		novo->prox = primeiro;
+		primeiro = novo;
+	}
 	else
 	{
-		// procura o final da lista
-		NO* aux = primeiro;
-		while (aux->prox != NULL) {
-			aux = aux->prox;
+		NO* anterior = primeiro;
+		NO* atual = primeiro->prox;
+
+		while (atual != NULL && novo->valor > atual->valor)
+		{
+			anterior = atual;
+			atual = atual->prox;
 		}
-		aux->prox = novo;
+
+		novo->prox = atual;
+		anterior->prox = novo;
 	}
 }
 
+
 void excluirElemento()
 {
+	if (primeiro == NULL)
+	{
+		cout << "Lista vazia. Não é possível excluir elementos." << endl;
+		return;
+	}
 
+	int valorExclusao;
+	cout << "Digite o elemento a ser excluído: ";
+	cin >> valorExclusao;
+
+	NO* anterior = NULL;
+	NO* atual = primeiro;
+
+	while (atual != NULL && atual->valor < valorExclusao)
+	{
+		anterior = atual;
+		atual = atual->prox;
+	}
+
+	if (atual != NULL && atual->valor == valorExclusao)
+	{
+		if (anterior == NULL)
+		{
+			primeiro = atual->prox;
+		}
+		else
+		{
+			anterior->prox = atual->prox;
+		}
+
+		free(atual);
+		cout << "Elemento excluído: " << valorExclusao << endl;
+	}
+	else
+	{
+		cout << "Elemento não encontrado: " << valorExclusao << endl;
+	}
 }
 
 void buscarElemento()
 {
+	if (primeiro == NULL)
+	{
+		cout << "Lista vazia. Não é possível buscar elementos." << endl;
+		return;
+	}
 
+	int valorBusca;
+	cout << "Digite o elemento a ser buscado: ";
+	cin >> valorBusca;
+
+	NO* atual = primeiro;
+	while (atual != NULL && atual->valor < valorBusca)
+	{
+		atual = atual->prox;
+	}
+
+	if (atual != NULL && atual->valor == valorBusca)
+	{
+		cout << "Elemento encontrado: " << valorBusca << endl;
+	}
+	else
+	{
+		cout << "Elemento não encontrado: " << valorBusca << endl;
+	}
 }
-
-
